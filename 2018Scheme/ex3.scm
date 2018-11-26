@@ -1,0 +1,15 @@
+(define diff
+  (lambda (k)
+    (cond ((number? k) 0)
+          ((equal? 'x k) 1)
+          ((and (equal? (car k) '+) (= (length k) 4)) (list '+ (diff(cadr k)) (diff(caddr k)) (diff(cadddr k)))
+	   )
+          ((and (equal? (car k) '+) (= (length k) 3)) (list '+ (diff(cadr k)) (diff(caddr k)))
+	   )
+          ((equal? (car k) '-) (list '- (diff(cadr k)) (diff(caddr k))))
+          ((equal? (car k) '*) (list '+ (list '* (cadr k) (diff(caddr k))) (list '* (diff(cadr k)) (caddr k))))
+          ((equal? (car k) '**) (list '* (caddr k) (list '* (diff(cadr k)) (list '** (cadr k) (- (caddr k) 1)))))
+	  )
+    )
+  )
+
